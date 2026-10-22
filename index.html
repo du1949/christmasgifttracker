@@ -30,7 +30,9 @@
   --shadow:0 2px 14px rgba(0,0,0,.4);--snow-op:.12;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45} overflow-x:hidden
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45}
+html{overflow-x:hidden}
+body{overflow-x:clip}
 a{color:var(--green)}
 button,input,select,textarea{font:inherit;color:inherit}
 h1,h2,h3,.serif{font-family:var(--serif);font-weight:700;margin:0}
@@ -48,8 +50,9 @@ header{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px
 .hwrap{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;font-size:22px;text-decoration:none;color:inherit;white-space:nowrap}
 .brand .art{font-size:28px;width:34px;height:34px}
-nav{flex:1;display:flex;justify-content:center;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav{flex:1;display:flex;justify-content:flex-start;gap:8px;overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
+.tab:first-child{margin-left:auto}.tab:last-child{margin-right:auto}
 .tab{border:1px solid var(--border);background:var(--card);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;font-size:14px;transition:.15s}
 .tab .art{font-size:16px;width:18px;height:18px}
 .tab:hover{border-color:var(--gold)}
@@ -213,25 +216,20 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px 40p
 /* responsive */
 /* responsive */
 /* 装饰物:版面不够宽就隐藏,避免撑出横向滚动条 */
+/* responsive */
+/* 装饰物:版面不够宽就隐藏 */
 @media(max-width:1200px){.page-head .holly,.page-head .bell{display:none}}
 
-/* 平板(≤1000):导航换行占满一行;四列变两列,甜甜圈保持三个一排 */
-@media(max-width:1000px){
+/* 平板横屏(≤1100):导航换行;礼物表格变两列卡片;想法两列 */
+@media(max-width:1100px){
   .hwrap{flex-wrap:wrap;row-gap:8px}.brand{order:1}.theme-btn{order:2;margin-left:auto}
-  nav{order:3;width:100%;justify-content:flex-start}
-  .g4,.g3{grid-template-columns:repeat(2,1fr)}
-  #donuts{grid-template-columns:repeat(3,1fr)}
-  .page-head{flex-wrap:wrap}
-}
-
-/* 小平板 / 大手机(≤860):表格变卡片;输入框 16px 防 iOS 放大 */
-@media(max-width:860px){
-  input,select,textarea{font-size:16px}
-  .banner-body{flex-wrap:wrap}.banner-body h1{font-size:30px}.banner-body .santa{font-size:60px;width:72px;height:72px}
-  .filters{flex-wrap:wrap}.filters input{flex-basis:100%}.filters select{flex:1}
+  nav{order:3;flex:1 1 100%;justify-content:flex-start}
+  #ideaGrid{grid-template-columns:repeat(2,1fr)}
   .table-card{background:transparent;border:0;box-shadow:none;overflow:visible}
-  table,tbody,tr,td{display:block}thead{display:none}
-  tbody tr{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px;margin-bottom:12px}
+  .table-card>.empty{background:var(--card);border:1px solid var(--border);border-radius:14px}
+  table,tr,td{display:block}thead{display:none}
+  tbody{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  tbody tr{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px}
   tbody td{border:0;padding:5px 0;display:flex;justify-content:space-between;align-items:center;white-space:normal;gap:10px}
   tbody td::before{content:attr(data-label);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
   tbody td.main{display:block;font-size:17px;font-weight:700;padding-bottom:6px}
@@ -241,13 +239,26 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px 40p
   tbody td:last-child .acts{width:100%;margin-top:6px}
   tbody td:last-child .acts .btn{flex:1;padding:9px 10px}
   tbody input[type=checkbox]{width:22px;height:22px}
+}
+
+/* 平板竖屏(≤1000):四列变两列,甜甜圈保持三个一排 */
+@media(max-width:1000px){
+  .g4,.g3{grid-template-columns:repeat(2,1fr)}
+  #donuts{grid-template-columns:repeat(3,1fr)}
+  .page-head{flex-wrap:wrap}
+}
+
+/* 小平板 / 大手机(≤860):输入框 16px 防 iOS 放大 */
+@media(max-width:860px){
+  input,select,textarea{font-size:16px}
+  .banner-body{flex-wrap:wrap}.banner-body h1{font-size:30px}.banner-body .santa{font-size:60px;width:72px;height:72px}
+  .filters{flex-wrap:wrap}.filters input{flex-basis:100%}.filters select{flex:1}
   .settings-card{padding-right:20px}.settings-card .corner-art{display:none}
   .modal{max-height:92dvh}
 }
 
 /* 手机(≤600):底部标签栏、弹窗变抽屉、图表改横向、全部单列 */
 @media(max-width:600px){
-  /* 导航移到底部,像原生 App */
   .hwrap{flex-wrap:nowrap;padding:10px 16px}.brand{font-size:20px}
   nav{position:fixed;left:0;right:0;bottom:0;z-index:30;width:auto;order:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:0;padding:6px 4px calc(6px + env(safe-area-inset-bottom));overflow:visible}
   .tab{flex:1;min-width:0;flex-direction:column;justify-content:flex-start;gap:3px;border:0;border-radius:10px;padding:6px 2px;font-size:10.5px;line-height:1.15;text-align:center;white-space:normal;background:transparent}
@@ -257,8 +268,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px 40p
   footer{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .toast{bottom:calc(88px + env(safe-area-inset-bottom))}
 
-  /* 布局与字号 */
-  .g2,.g3,#donuts{grid-template-columns:1fr}
+  .g2,.g3,#donuts,#ideaGrid,tbody{grid-template-columns:1fr}
   .card{padding:16px}
   .corner-art{font-size:28px;width:32px;height:32px;right:12px;top:12px}
   .page-head h2{font-size:20px}
@@ -268,27 +278,22 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px 40p
   .banner-body .season-lbl{font-size:18px}.banner-body h1{font-size:24px}
   .banner-body .days{font-size:22px}.banner-body .santa{font-size:48px;width:56px;height:56px;margin-bottom:-8px}
 
-  /* 图表:每人一行,横向柱子 */
   .chart{display:block;height:auto;overflow:visible;margin:14px 0 4px}
   .bar-group{flex-direction:row;align-items:center;gap:10px;min-width:0;margin-bottom:10px}
   .bar-label{order:-1;flex:0 0 72px;text-align:right;margin:0;max-width:none}
   .bars{flex:1;flex-direction:column;align-items:stretch;height:auto;gap:3px}
   .bar{height:9px;width:var(--p);min-height:0;min-width:3px;border-radius:2px 5px 5px 2px}
 
-  /* 想法卡片:按钮换到下一行 */
   .icard{flex-wrap:wrap}
   .icard .acts{flex-direction:row;width:100%;padding-left:62px}
   .icard .acts .btn{flex:1}
   .rcard .prog{margin-right:44px}
 
-  /* 弹窗:从底部滑出的抽屉 */
   .row{flex-direction:column;gap:0}
   .overlay{align-items:flex-end;padding:0}
   .modal{max-width:none!important;border-radius:18px 18px 0 0;max-height:94dvh;padding:20px 18px calc(18px + env(safe-area-inset-bottom))}
   .welcome{padding:30px 22px calc(26px + env(safe-area-inset-bottom))}
   .check-row{flex-wrap:wrap;gap:10px 18px}
-
-  /* 触控目标加大 */
   .btn.sm{padding:8px 12px;font-size:13px}
 }
 @media(max-width:520px){.g4{grid-template-columns:1fr}.stat .val{font-size:24px}}
@@ -893,7 +898,7 @@ renderAll();
       {
         "@type": "WebApplication",
         "name": "Gift Tracker",
-        "url": "https://你的域名/",
+        "url": "https://christmasgifttracker.app",
         "applicationCategory": "LifestyleApplication",
         "operatingSystem": "Any",
         "browserRequirements": "Requires JavaScript",
